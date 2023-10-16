@@ -14,16 +14,25 @@ const userSchema = new Schema({
         required: true
     }
 });
-userSchema.pre('save',async function(){
-    try{
-var user=this;
-const salt =await(bcrypt.genSalt(10));
-const hashpass=await bcrypt.hash(user.password,salt);
-user.password=hashpass;
+userSchema.pre('save', async function () {
+    try {
+        var user = this;
+        const salt = await (bcrypt.genSalt(10));
+        const hashpass = await bcrypt.hash(user.password, salt);
+        user.password = hashpass;
     }
-    catch(err){
+    catch (err) {
         throw err;
     }
 })
+userSchema.methods.comparePassword = async function (password) {
+    try {
+        const isMatch = await bcrypt.compare(password, this.password);
+        return isMatch;
+    }
+    catch (err) {
+        throw err;
+    }
+}
 const UserModel = db.model('user', userSchema);
 module.exports = UserModel;
