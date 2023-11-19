@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const db = require('../config/db');
+const db = require('./db');
 const userModel = require('../model/usermodel');
 const { Schema } = mongoose;
 const todoSchema = new Schema({
@@ -17,5 +17,5 @@ const todoSchema = new Schema({
         required: true
     }
 });
-const todoModel = db.model('todotask', todoSchema);
+const todoModel = mongoose.model('todotask', todoSchema);
 module.exports = todoModel;
